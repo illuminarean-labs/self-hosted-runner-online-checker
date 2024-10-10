@@ -1,18 +1,24 @@
 {
   "name": "self-hosted-runner-online-checker",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is a simple GitHub Action that checks if the self-hosted runner is online or not.",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github-personal:YangTaeyoung/self-hosted-runner-online-checker.git"
-  },
-  "private": true,
   "dependencies": {
     "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.0"
-  }
+    "@actions/github": "^6.0.0",
+    "before-after-hook": "^2.2.3",
+    "deprecation": "^2.3.1",
+    "once": "^1.4.0",
+    "tunnel": "^0.0.6",
+    "undici": "^5.28.4",
+    "universal-user-agent": "^6.0.1",
+    "wrappy": "^1.0.2"
+  },
+  "scripts": {
+    "build": "ncc build index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

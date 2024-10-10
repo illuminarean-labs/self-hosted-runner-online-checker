@@ -25,7 +25,13 @@ async function run() {
             runners.push(...organizationRunners);
         }
 
-        const targetRunners = runners.filter(runner => runnerLabels.every(label => runner.labels.includes(label)));
+        let targetRunners = [];
+        if (runnerLabelsStr === '' || runnerLabelsStr === 'all') {
+            targetRunners = runners;
+        } else {
+            targetRunners = runners.filter(runner => runnerLabels.every(label => runner.labels.includes(label)));
+        }
+
 
         // 2. Runner Tag로 필터링
         let success = false;

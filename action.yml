@@ -4,9 +4,14 @@ inputs:
   runner-labels:
     description: 'Runner labels to use (space, comma, or semicolon separated)'
     required: true
+  include-organization-runners:
+    description: 'Include organization runners'
+    required: false
+    default: 'false'
+
 branding:
   icon: "check-circle"
   color: "blue"
 runs:
   using: 'node20'
-  main: 'index.js'
+  main: 'dist/index.js'
