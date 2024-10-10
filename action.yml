@@ -8,6 +8,10 @@ inputs:
     description: 'Include organization runners'
     required: false
     default: 'false'
+  GITHUB_TOKEN:
+    description: 'GitHub token'
+    required: true
+    default: '${{ github.token }}'
 
 branding:
   icon: "check-circle"
