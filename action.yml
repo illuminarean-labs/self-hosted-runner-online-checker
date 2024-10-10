@@ -1,0 +1,12 @@
+name: 'Find Online Runner with Tag'
+description: 'This action finds an online runner with a specific tag.'
+inputs:
+  runner-labels:
+    description: 'Runner labels to use (space, comma, or semicolon separated)'
+    required: true
+branding:
+  icon: "check-circle"
+  color: "blue"
+runs:
+  using: 'node20'
+  main: 'index.js'
