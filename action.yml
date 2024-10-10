@@ -3,16 +3,19 @@ description: 'This action finds an online runner with a specific tag.'
 inputs:
   runner-labels:
     description: 'Runner labels to use (space, comma, or semicolon separated)'
-    required: true
+    required: false
+    default: 'all'
   include-organization-runners:
-    description: 'Include organization runners'
+    description: 'Include organization runners (Experimental)'
     required: false
     default: 'false'
   GITHUB_TOKEN:
     description: 'GitHub token'
     required: true
     default: '${{ github.token }}'
-
+outputs:
+  found:
+    description: 'Found runner (`success`, `failure`)'
 branding:
   icon: "check-circle"
   color: "blue"
