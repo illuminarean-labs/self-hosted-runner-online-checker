@@ -1,4 +1,4 @@
-name: 'Find Online Runner with Tag'
+name: 'Self-Hosted Runner Online Checker'
 description: 'This action finds an online runner with a specific tag.'
 inputs:
   runner-labels:
