@@ -27,7 +27,7 @@ jobs:
     steps:
       - name: Check Runner Online
         id: check-runner-online
-        uses: YangTaeyoung/self-hosted-runner-online-checker@v1
+        uses: YangTaeyoung/self-hosted-runner-online-checker@v1.0.5
         with:
           runner-labels: 'self-hosted x64 my-runner'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

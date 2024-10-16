@@ -31816,48 +31816,62 @@ const github = __nccwpck_require__(2872);
 
 async function run() {
     try {
-        const runnerLabelsStr = core.getInput('runner-labels', { required: true });
-        const runnerLabels = runnerLabelsStr.split(/[, ;]+/).map(label => label.trim());
-        const includeOrganizationRunners = core.getInput('include-organization-runners') === 'true';
+        const runnerLabelsStr = core.getInput('runner-labels',
+            {required: true});
+        const runnerLabels = runnerLabelsStr.split(/[, ;]+/).map(
+            label => label.trim());
+        const includeOrganizationRunners = core.getInput(
+            'include-organization-runners') === 'true';
 
-        const token = core.getInput('GITHUB_TOKEN', { required: true })
+        const token = core.getInput('GITHUB_TOKEN', {required: true})
         const octokit = github.getOctokit(token);
 
         const runners = [];
-        // 1. List self-hosted runners
-        const { data: response } = await octokit.rest.actions.listSelfHostedRunnersForRepo({
-            owner: github.context.repo.owner,
-            repo: github.context.repo.repo,
-        });
-        core.info(`Repository Runner: ${JSON.stringify(response.runners, null, 2)}`);
+
+        const {data: response} = await octokit.rest.actions.listSelfHostedRunnersForRepo(
+            {
+                owner: github.context.repo.owner,
+                repo: github.context.repo.repo,
+            });
+        core.info(
+            `Repository Runner: ${JSON.stringify(response.runners, null, 2)}`);
         runners.push(...response.runners);
 
         if (includeOrganizationRunners) {
-            const { data: response } = await octokit.rest.actions.listSelfHostedRunnersForOrg({
-                org: github.context.repo.owner,
-            });
+            const {data: response} = await octokit.rest.actions.listSelfHostedRunnersForOrg(
+                {
+                    org: github.context.repo.owner,
+                });
             runners.push(...response.runners);
         }
 
         let targetRunners = [];
+
         if (runnerLabelsStr === '' || runnerLabelsStr === 'all') {
             targetRunners = runners;
         } else {
-            targetRunners = runners.filter(runner => runnerLabels.every(label => runner.labels.includes(label)));
+            targetRunners = runners.filter(
+                runner => runnerLabels.every(
+                    label => runner.labels.some(
+                        runnerLabel => runnerLabel.name === label
+                    )
+                )
+            );
         }
 
-        // 2. Runner Tag로 필터링
-        let success = false;
+        core.info(`label filtered runners: ${targetRunners.length}`);
 
         for (const runner of targetRunners) {
             if (runner.status === 'online') {
-                core.info(`Found online runner with labels: ${runnerLabels}: ${runner.name} (ID: ${runner.id})`);
+                core.info(
+                    `Found online runner with labels: ${runnerLabels}: ${runner.name} (ID: ${runner.id})`);
                 core.setOutput("found", "success");
                 return;
             }
         }
 
-        core.setOutput("found","failure");
+        core.info(`No online runner with labels: ${runnerLabels} found`);
+        core.setOutput("found", "failure");
     } catch (error) {
         core.setFailed(error.message);
     }
