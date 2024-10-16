@@ -1,20 +1,22 @@
-# Hello Self Hosted Runner Online Checker!👋
+# Hello Self-Hosted Runner Online Checker 👋
 
-This is a simple GitHub Action that checks if the self-hosted runner is online or not.
+이것은 셀프 호스팅 러너가 온라인 상태인지 확인하는 간단한 GitHub Action입니다.
 
-## Inputs
-- `runner-labels`: (Optional) The labels of the runner to check. If you have multiple runners, you can specify the labels of the runner you want to check. If you want to check all runners, you can use `all` or blank
-- `include-organization-runners`: (Optional) If you want to check organization runners, you can set this to `true`. Default is `false`. (Experimental)
-- `GITHUB_TOKEN`: (Required) The GitHub token to use for authentication.
-  - `repo:full` (When you want to check only repository runners)
+## 입력
+
+- `runner-labels`: (선택 사항) 확인할 러너의 레이블입니다. 여러 개의 러너가 있는 경우 확인하려는 러너의 레이블을 지정할 수 있습니다. 모든 러너를 확인하려면 `all` 또는 공백을 사용하세요.
+- `include-organization-runners`: (선택 사항) 조직 러너를 확인하려면 이 값을 `true`로 설정하세요. 기본값은 `false`입니다. (실험적 기능)
+- `GITHUB_TOKEN`: (필수) 인증에 사용할 GitHub 토큰입니다.
+  - `repo:full` (저장소 러너만 확인하려는 경우)
     ![img.png](img.png)
-  - `admin:org.manager_runner`: Organization Manage Runner (When you want to check organization runners) (Experimental)
+  - `admin:org.manager_runner`: 조직 러너 관리 (조직 러너를 확인하려는 경우) (실험적 기능)
     ![img_1.png](img_1.png)
-    - It is not tested yet. Please let me know if you have any problems.
-     
-## Example
+    - 아직 테스트되지 않았습니다. 문제가 발생하면 알려주세요.
+
+## 예제
+
 ```yaml
-name: Check Runner Online
+name: Runner Online Check
 
 on: [push]
 
@@ -25,9 +27,9 @@ jobs:
     outputs:
       found: ${{ steps.check-runner-online.outputs.found }}
     steps:
-      - name: Check Runner Online
+      - name: 러너 온라인 확인
         id: check-runner-online
-        uses: YangTaeyoung/self-hosted-runner-online-checker@v1.0.5
+        uses: illuminarean/self-hosted-runner-online-checker@main
         with:
           runner-labels: 'self-hosted x64 my-runner'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -37,14 +39,13 @@ jobs:
     needs: check-self-hosted-runner
     if: ${{ success() && needs.check-self-hosted-runner.outputs.found == 'success' }}
     steps:
-      - name: Runner is online
-        run: echo "Runner is online"
- 
+      - name: 러너가 온라인입니다
+        run: echo "러너가 온라인입니다"
+
   some_the_other_job:
     runs-on: ubuntu-latest
     needs: check-self-hosted-runner
     if: ${{ success() && needs.check-self-hosted-runner.outputs.found == 'failure' }}
     steps:
-      - name: Runner is offline
-        run: echo "Runner is offline"
-```
+      - name: 러너가 오프라인입니다
+        run: echo "러너가 오프라인입니다"
